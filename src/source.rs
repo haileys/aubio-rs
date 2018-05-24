@@ -4,26 +4,32 @@ use std::ptr;
 use super::ffi::{self, c_uint};
 use super::types;
 
+#[derive(Debug)]
 pub struct Source {
     ptr: *mut ffi::Source,
     hop_size: usize,
 }
 
+#[derive(Debug)]
 pub enum SourceError {
     NulInUri(NulError),
     BadSource,
 }
 
 impl Source {
-    pub fn new(uri: &str, sample_rate: c_uint, hop_size: c_uint) -> Result<Self, SourceError> {
+    pub fn open(uri: &str, sample_rate: usize, hop_size: usize) -> Result<Self, SourceError> {
         let uri_cstr = CString::new(uri).map_err(SourceError::NulInUri)?;
 
-        let ptr = unsafe { ffi::new_aubio_source(uri_cstr.as_ptr(), sample_rate, hop_size) };
+        let ptr = unsafe {
+            ffi::new_aubio_source(uri_cstr.as_ptr(),
+                ffi::uint(sample_rate),
+                ffi::uint(hop_size))
+        };
 
         if ptr == ptr::null_mut() {
             Err(SourceError::BadSource)
         } else {
-            Ok(Source { ptr, hop_size: hop_size as usize })
+            Ok(Source { ptr, hop_size })
         }
     }
 
@@ -36,18 +42,28 @@ impl Source {
         unsafe {
             let mut read: c_uint = 0;
 
-            ffi::with_fvec(samples, |fvec| {
-                ffi::aubio_source_do(self.ptr, fvec as *mut ffi::FVec, &mut read as *mut c_uint);
-            });
+            {
+                let mut fvec = ffi::fvec_mut(samples);
+                ffi::aubio_source_do(self.ptr, &mut fvec as *mut ffi::FVecMut, &mut read as *mut c_uint);
+            }
 
             samples.set_len(read as usize);
         }
     }
 
-    pub fn read(&mut self) -> Vec<types::Sample> {
+    pub fn read(&mut self) -> Option<Vec<types::Sample>> {
         let mut samples = Vec::new();
         self.read_into(&mut samples);
-        samples
+
+        if samples.len() == 0 {
+            None
+        } else {
+            Some(samples)
+        }
+    }
+
+    pub fn sample_rate(&self) -> usize {
+        unsafe { ffi::aubio_source_get_samplerate(self.ptr) as usize }
     }
 }
 
