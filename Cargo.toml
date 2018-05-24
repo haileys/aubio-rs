@@ -1,0 +1,8 @@
+[package]
+name = "aubio"
+authors = ["Charlie Somerville <charlie@charlie.bz>"]
+version = "0.0.1"
+description = "Rust bindings for aubio"
+license = "MIT"
+repository = "https://github.com/charliesome/aubio-rs"
+homepage = "https://github.com/charliesome/aubio-rs"
