@@ -9,6 +9,11 @@ pub struct Tempo {
     hop_size: usize,
 }
 
+unsafe impl Send for Tempo {}
+
+// all non-Sync methods take &mut self:
+unsafe impl Sync for Tempo {}
+
 impl Tempo {
     pub fn new(buffer_size: usize, hop_size: usize, sample_rate: usize) -> Result<Self, ()> {
         const DEFAULT: *const c_char = b"default\0" as *const u8 as *const i8;

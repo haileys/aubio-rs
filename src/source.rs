@@ -10,6 +10,11 @@ pub struct Source {
     hop_size: usize,
 }
 
+unsafe impl Send for Source {}
+
+// all non-Sync methods take &mut self:
+unsafe impl Sync for Source {}
+
 #[derive(Debug)]
 pub enum SourceError {
     NulInUri(NulError),
