@@ -48,6 +48,10 @@ impl Tempo {
             Some(bpm as f32)
         }
     }
+
+    pub fn last_beat_ms(&self) -> f32 {
+        unsafe { ffi::aubio_tempo_get_last_ms(self.ptr) }
+    }
 }
 
 impl Drop for Tempo {

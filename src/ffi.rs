@@ -57,4 +57,5 @@ extern "C" {
     pub fn del_aubio_tempo(tempo: *mut Tempo);
     pub fn aubio_tempo_do(tempo: *mut Tempo, imput: *const FVec, tempo: *mut FVecMut);
     pub fn aubio_tempo_get_bpm(tempo: *const Tempo) -> types::Sample;
+    pub fn aubio_tempo_get_last_ms(tempo: *const Tempo) -> types::Sample;
 }
