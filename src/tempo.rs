@@ -32,7 +32,10 @@ impl Tempo {
         }
     }
 
+    /// input_buffer length must equal hop_size!
     pub fn execute(&mut self, input_buffer: &[types::Sample]) {
+        assert!(input_buffer.len() == self.hop_size);
+
         let mut tempo = vec![0f32; 2];
         let mut tempo_fvec = ffi::fvec_mut(&mut tempo);
         let input_fvec = ffi::fvec(input_buffer);
