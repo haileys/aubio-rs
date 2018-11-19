@@ -6,6 +6,7 @@ use super::types;
 
 pub enum Source {}
 pub enum Tempo {}
+pub enum Onset {}
 
 #[repr(C)]
 pub struct FVecMut<'a> {
@@ -58,4 +59,12 @@ extern "C" {
     pub fn aubio_tempo_do(tempo: *mut Tempo, imput: *const FVec, tempo: *mut FVecMut);
     pub fn aubio_tempo_get_bpm(tempo: *const Tempo) -> types::Sample;
     pub fn aubio_tempo_get_last_ms(tempo: *const Tempo) -> types::Sample;
+
+    pub fn new_aubio_onset(method: *const c_char, buf_size: c_uint, hop_size: c_uint, sample_rate: c_uint) -> *mut Onset;
+    pub fn aubio_onset_set_threshold (onset: *mut Onset, threshold: types::Sample);
+    pub fn aubio_onset_set_silence (onset: *mut Onset, silence: types::Sample);
+    pub fn aubio_onset_set_minioi_s (onset: *mut Onset, seconds: types::Sample);
+    pub fn aubio_onset_do(onset: *mut Onset, imput: *const FVec, position: *mut FVecMut);
+    pub fn aubio_onset_get_last_s(onset: *mut Onset) -> types::Sample;
+    pub fn del_aubio_onset(onset: *mut Onset);
 }
