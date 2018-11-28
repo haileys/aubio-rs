@@ -16,13 +16,13 @@ unsafe impl Sync for Onset {}
 
 impl Onset {
   pub fn new(buffer_size: usize, hop_size: usize, sample_rate: usize) -> Result<Self, ()> {
-    const DEFAULT: *const c_char = b"default\0" as *const u8 as *const i8;
-    // const SPECFLUX: *const c_char = b"specflux\0" as *const u8 as *const i8;
+    // const DEFAULT: *const c_char = b"default\0" as *const u8 as *const i8;
+    const SPECFLUX: *const c_char = b"specflux\0" as *const u8 as *const i8;
     // ...
 
     let ptr = unsafe {
       ffi::new_aubio_onset(
-        DEFAULT,
+        SPECFLUX,
         ffi::uint(buffer_size),
         ffi::uint(hop_size),
         ffi::uint(sample_rate),
@@ -52,8 +52,8 @@ impl Onset {
     }
   }
 
-  pub fn last_onset_s(&self) -> f32 {
-    unsafe { ffi::aubio_onset_get_last_s(self.ptr) }
+  pub fn last_onset(&self) -> u32 {
+    unsafe { ffi::aubio_onset_get_last(self.ptr) }
   }
 
   pub fn set_threshold(&self, threshold: types::Sample) {

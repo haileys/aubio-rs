@@ -65,6 +65,6 @@ extern "C" {
     pub fn aubio_onset_set_silence (onset: *mut Onset, silence: types::Sample);
     pub fn aubio_onset_set_minioi_s (onset: *mut Onset, seconds: types::Sample);
     pub fn aubio_onset_do(onset: *mut Onset, imput: *const FVec, position: *mut FVecMut);
-    pub fn aubio_onset_get_last_s(onset: *mut Onset) -> types::Sample;
+    pub fn aubio_onset_get_last(onset: *mut Onset) -> c_uint;
     pub fn del_aubio_onset(onset: *mut Onset);
 }
