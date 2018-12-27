@@ -49,10 +49,11 @@ pub fn uint(sz: usize) -> c_uint {
 }
 
 #[repr(C)]
+#[derive(Debug)]
 pub struct CVecMut<'a> {
     len: c_uint,
-    norm: *mut types::Sample,
-    phas: *mut types::Sample,
+    pub norm: *mut types::Sample,
+    pub phas: *mut types::Sample,
     _marker: PhantomData<&'a mut Vec<types::Sample>>,
 }
 
@@ -60,7 +61,7 @@ pub fn cvec_mut<'a>(norm: &'a mut Vec<types::Sample>, phas: &'a mut Vec<types::S
     CVecMut {
         len: uint(norm.len()),
         norm: norm.as_mut_ptr(),
-        phas: norm.as_mut_ptr(),
+        phas: phas.as_mut_ptr(),
         _marker: PhantomData,
     }
 }
@@ -77,7 +78,7 @@ pub fn cvec<'a>(norm: &'a [types::Sample], phas:  &'a [types::Sample]) -> CVec<'
     CVec {
         len: uint(norm.len()),
         norm: norm.as_ptr(),
-        phas: norm.as_ptr(),
+        phas: phas.as_ptr(),
         _marker: PhantomData,
     }
 }
@@ -101,10 +102,13 @@ extern "C" {
     pub fn aubio_onset_set_threshold (onset: *mut Onset, threshold: types::Sample);
     pub fn aubio_onset_set_silence (onset: *mut Onset, silence: types::Sample);
     pub fn aubio_onset_set_minioi_s (onset: *mut Onset, seconds: types::Sample);
-    pub fn aubio_onset_do(onset: *mut Onset, imput: *const FVec, position: *mut FVecMut);
+    pub fn aubio_onset_do(onset: *mut Onset, input: *const FVec, position: *mut FVecMut);
     pub fn aubio_onset_get_last(onset: *mut Onset) -> c_uint;
     pub fn del_aubio_onset(onset: *mut Onset);
 
     // pvoc
     pub fn new_aubio_pvoc(win_s: c_uint, hop_s: c_uint) -> *mut Pvoc;
+    pub fn del_aubio_pvoc(pv: *mut Pvoc);
+    pub fn aubio_pvoc_do(pv: *mut Pvoc, input: *const FVec, fftgrain: *mut CVecMut);
+    pub fn aubio_pvoc_rdo(pv: *mut Pvoc, fftgrain: *const CVec, output: *mut FVecMut);
 }
