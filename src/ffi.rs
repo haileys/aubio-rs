@@ -57,7 +57,7 @@ pub struct CVecMut<'a> {
     _marker: PhantomData<&'a mut Vec<types::Sample>>,
 }
 
-pub fn cvec_mut<'a>(norm: &'a mut Vec<types::Sample>, phas: &'a mut Vec<types::Sample>) -> CVecMut<'a> {
+pub fn cvec_mut<'a>(norm: &'a mut [types::Sample], phas: &'a mut [types::Sample]) -> CVecMut<'a> {
     CVecMut {
         len: uint(norm.len()),
         norm: norm.as_mut_ptr(),
