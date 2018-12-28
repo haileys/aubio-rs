@@ -32,8 +32,6 @@ impl Pvoc {
         mut phas: &mut [f32],
     ) {
         assert!(input_buffer.len() == self.hop_size);
-        assert!(norm.len() == self.hop_size);
-        assert!(phas.len() == self.hop_size);
 
         // convert input buffer
         let input_fvec = ffi::fvec(input_buffer);
@@ -56,9 +54,6 @@ impl Pvoc {
         phas: &[types::Sample],
         output_buffer: &mut Vec<f32>,
     ) {
-        assert!(output_buffer.len() == self.hop_size);
-        assert!(norm.len() == self.hop_size);
-        assert!(phas.len() == self.hop_size);
 
         // convert output buffer
         let mut output_fvec = ffi::fvec_mut(output_buffer);
