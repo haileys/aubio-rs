@@ -16,8 +16,9 @@ unsafe impl Sync for Onset {}
 
 impl Onset {
     pub fn new(buffer_size: usize, hop_size: usize, sample_rate: usize) -> Result<Self, ()> {
-        // const DEFAULT: *const c_char = b"default\0" as *const u8 as *const i8;
+        const DEFAULT: *const c_char = b"default\0" as *const u8 as *const i8;
         const SPECFLUX: *const c_char = b"specflux\0" as *const u8 as *const i8;
+        const SPECDIFF: *const c_char = b"specdiff\0" as *const u8 as *const i8;
         // ...
 
         let ptr = unsafe {

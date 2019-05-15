@@ -93,7 +93,7 @@ extern "C" {
     // tempo detection
     pub fn new_aubio_tempo(method: *const c_char, buf_size: c_uint, hop_size: c_uint, sample_rate: c_uint) -> *mut Tempo;
     pub fn del_aubio_tempo(tempo: *mut Tempo);
-    pub fn aubio_tempo_do(tempo: *mut Tempo, imput: *const FVec, tempo: *mut FVecMut);
+    pub fn aubio_tempo_do(tempo: *mut Tempo, imput: *const FVec, t: *mut FVecMut);
     pub fn aubio_tempo_get_bpm(tempo: *const Tempo) -> types::Sample;
     pub fn aubio_tempo_get_last_ms(tempo: *const Tempo) -> types::Sample;
 
