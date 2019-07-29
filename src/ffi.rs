@@ -7,6 +7,7 @@ use super::types;
 pub enum Source {}
 pub enum Tempo {}
 pub enum Sink {}
+pub enum Onset {}
 
 #[repr(C)]
 pub struct FVecMut<'a> {
@@ -64,4 +65,9 @@ extern "C" {
     pub fn del_aubio_sink(sink: *mut Sink);
     pub fn aubio_sink_get_samplerate(sink: *const Sink) -> c_uint;
     pub fn aubio_sink_do(sink: *mut Sink, write_data: *const FVec, write: c_uint);
+
+    pub fn new_aubio_onset(method: *const c_char, buf_size: c_uint, hop_size: c_uint, sample_rate: c_uint) -> *mut Onset;
+    pub fn del_aubio_onset(onset: *mut Onset);
+    pub fn aubio_onset_do(onset: *mut Onset, input: *const FVec, onset: *mut FVecMut);
+    pub fn aubio_onset_get_last(onset: *mut Onset) -> c_uint;
 }
