@@ -40,9 +40,7 @@ impl Sink {
         unsafe {
             let input_fvec = ffi::fvec(write_data);
             let write: c_uint = write_data.len() as u32;
-            {
-                ffi::aubio_sink_do(self.ptr, &input_fvec as *const ffi::FVec, write);
-            }
+            ffi::aubio_sink_do(self.ptr, &input_fvec as *const ffi::FVec, write);
         }
     }
 
