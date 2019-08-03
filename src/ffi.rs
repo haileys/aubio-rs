@@ -6,6 +6,7 @@ use super::types;
 
 pub enum Source {}
 pub enum Tempo {}
+pub enum Sink {}
 
 #[repr(C)]
 pub struct FVecMut<'a> {
@@ -58,4 +59,9 @@ extern "C" {
     pub fn aubio_tempo_do(tempo: *mut Tempo, imput: *const FVec, tempo: *mut FVecMut);
     pub fn aubio_tempo_get_bpm(tempo: *const Tempo) -> types::Sample;
     pub fn aubio_tempo_get_last_ms(tempo: *const Tempo) -> types::Sample;
+
+    pub fn new_aubio_sink(uri: *const c_char, sample_rate: c_uint) -> *mut Sink;
+    pub fn del_aubio_sink(sink: *mut Sink);
+    pub fn aubio_sink_get_samplerate(sink: *const Sink) -> c_uint;
+    pub fn aubio_sink_do(sink: *mut Sink, write_data: *const FVec, write: c_uint);
 }
